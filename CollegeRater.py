@@ -18,8 +18,32 @@ class CollegeRater:
         soup = BeautifulSoup(r.content, 'html5lib')
 
         admissions_table = soup.find('div', attrs={'id': "admsns"})
+        print(admissions_table.prettify())
+        SATR_index = admissions_table.prettify().index("SAT Evidence-Based Reading and Writing")
+        SATR_index = admissions_table.prettify().index("SAT Math")
+        ACTC_index = admissions_table.prettify().index("ACT Composite")
+        ACTR_index = admissions_table.prettify().index("ACT English")
+        ACTM_index = admissions_table.prettify().index("ACT Math")
+        print(SATR_index)
+        print(admissions_table.prettify()[SATR_index: SATR_index+30])
+
+        data = []
+        tables = soup.findAll('table')
+        for table in tables:
+            table_body = table.find('tbody')
+
+            rows = table_body.find_all('tr')
+            for row in rows:
+                cols = row.find_all('td')
+                cols = [ele.text.strip() for ele in cols]
+                data.append([ele for ele in cols if ele]) # Get rid of empty values
+        print(data)
         return 
     def Rate(self):
         score = 0
         return score
 
+
+CR = CollegeRater("Princeton", 186131)
+print(CR.CreateURL())
+print(CR.Fetch(CR.CreateURL()))
