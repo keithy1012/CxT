@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 global array, data, majors, majors_dictionary
 def GetCollege():
-    college = pd.read_csv("CollegeScorecard_Raw_Data_09012022\\FieldOfStudyData1415_1516_PP.csv")
+    college = pd.read_csv("FieldOfStudyData1415_1516_PP.csv")
     array = college[["UNITID", "INSTNM" ,"CONTROL"]]
     array = array.drop_duplicates("INSTNM")
     return array
