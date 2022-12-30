@@ -2,6 +2,7 @@ from NeuralNetwork import NeuralNetwork
 import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions import *
+from CollegeRater import CollegeRater
 global LIST_OF_COLLEGES, DATA, MAJORS_DICTIONARY, COLLEGE_DICTIONARY
 
 learning_rate = 0.01
@@ -34,7 +35,19 @@ input_vectors = np.around(DATA[DATA.columns[1:10]].to_numpy(dtype=np.float64), 2
 
 #targets = np.array(DATA["College Attended"]) 
 #targets not working because college attended has to be numeric data
-targets = np.array([0.3,1.2,.2,.3,.4,.3,.6,.7,.8,.9,.10,.11,.6,.13,.3,.12])
+quantitative_college_list = []
+
+
+for row in DATA.itertuples():
+
+    CR = CollegeRater(row[14], row[13])
+    rank = CR.Run()
+    quantitative_college_list.append(int(rank))
+
+DATA.insert(11, "College_Rank", quantitative_college_list) 
+
+print(quantitative_college_list)
+targets = np.array(quantitative_college_list)
 training_error = NN.train(input_vectors, targets, 10000)
 plt.plot(training_error)
 plt.show()
