@@ -4,8 +4,10 @@ class NeuralNetwork:
     def __init__(self, learning_rate):
         self.learning_rate = learning_rate
         # Use however many input variables we have (10)
-        self.weights = np.array([np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(),
-        np.random.randn(), np.random.randn(), np.random.randn()])
+        #self.weights = np.array([np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(),
+        #np.random.randn(), np.random.randn(), np.random.randn()])
+        self.weights = np.array([np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(), np.random.randn(), 
+        np.random.randn()])
         self.bias = np.random.randn()
     
     def _sigmoid(self, x):

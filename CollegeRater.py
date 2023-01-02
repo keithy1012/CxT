@@ -59,7 +59,7 @@ class CollegeRater:
 
     def GetRank(self, uni_full_name):
         URL = f"https://www.forbes.com/colleges/{uni_full_name}/?sh=691441da2b7d"
-        print(URL)
+        #print(URL)
         r = requests.get(URL, headers=self.headers)
         soup = BeautifulSoup(r.content, 'html5lib')
         rank = soup.find("div", class_="profile-heading--desktop")
@@ -77,7 +77,7 @@ class CollegeRater:
         df = pd.read_csv("CLEANED_UP_COLLEGES.csv", index_col=False)
         val =  (df[(df['UNITID']==IPED_ID)])["INSTNM"]
         result = ''.join([i for i in val if not i.isdigit()])
-        print(result)
+        #print(result)
         result = result.replace(" ", "-")
         result = result.lower()
         return result
@@ -95,4 +95,5 @@ class CollegeRater:
         rank = CR.GetRank(CR.GetFullName(CR.GetID()))
        # CR.Fetch(CR.CreateURL())
         return rank #for now, we will use rank as the college's quantitative score
+        #later, use CR.Fetch to get more accurate score
 

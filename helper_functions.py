@@ -23,7 +23,7 @@ def ReplaceMajor(df, majors_dict):
     for row in df.itertuples():
         if row.Major in majors_dict.values():
             #list_of_major_code.append(list(majors_dict.keys()) [list(majors_dict.values()).index(row.Major)])
-            print(float(list(majors_dict.keys()) [list(majors_dict.values()).index(row.Major)]))
+            #print(float(list(majors_dict.keys()) [list(majors_dict.values()).index(row.Major)]))
             list_of_major_code.append(float(list(majors_dict.keys()) [list(majors_dict.values()).index(row.Major)]))
         else:
             list_of_major_code.append(0)

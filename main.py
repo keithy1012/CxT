@@ -10,13 +10,11 @@ NN = NeuralNetwork(learning_rate)
 
 LIST_OF_COLLEGES = GetCollege()
 COLLEGE_DICTIONARY = College_To_Number()
-
 t_DATA = PrintTraining()
 MAJORS_DICTIONARY = MajorDiction()
 DATA = ReplaceMajor(t_DATA, MAJORS_DICTIONARY)
 DATA = ReplaceCollege(DATA, COLLEGE_DICTIONARY)
-print(DATA)
-print(DATA.shape)
+
 # Standarizing ALL data:
 Standarized(DATA, DATA['Major_Codes'], 1, "S. Major Code")
 Standarized(DATA, DATA['Area'], 2, "S. Area")
@@ -27,27 +25,30 @@ Standarized(DATA, DATA['SAT'], 7, "S. SAT")
 Standarized(DATA, DATA['GPA'], 8, "S. GPA")
 Standarized(DATA, DATA['Acceptance Rate Low'], 10, "S. Low Acceptance")
 Standarized(DATA, DATA['Acceptance Rate High'], 11, "S. High Acceptance")
-DATA = DATA.drop(["Major_Codes", "Area", "SAT", "GPA", "Acceptance Rate Low", "Acceptance Rate High", "Raw_Cost_Low", "Raw_Cost_High", "Location_From_Home"], axis=1)
-print(DATA)
-#Input = DATA columns 1 (major codes) to 11 (acceptance rate high)
-# Output = college attended (12) --> SWITCH TO QUANTITATIVE
-input_vectors = np.around(DATA[DATA.columns[1:10]].to_numpy(dtype=np.float64), 2)
+DATA = DATA.drop(["Major_Codes", "Area", "SAT", "GPA", "Acceptance Rate Low", "Acceptance Rate High", "Raw_Cost_Low", "Major", "Raw_Cost_High", "Location_From_Home"], axis=1)
 
-#targets = np.array(DATA["College Attended"]) 
-#targets not working because college attended has to be numeric data
+
 quantitative_college_list = []
-
-
+#Finds ranking for college as quantitative data
 for row in DATA.itertuples():
-
     CR = CollegeRater(row[14], row[13])
     rank = CR.Run()
     quantitative_college_list.append(int(rank))
+DATA.insert(13, "College_Rank", quantitative_college_list) 
 
-DATA.insert(11, "College_Rank", quantitative_college_list) 
+Standarized(DATA, DATA['College_Rank'], 13, "S. College_Rank")
+DATA = DATA.drop(["College_Rank"], axis=1)
+print(DATA)
 
-print(quantitative_college_list)
-targets = np.array(quantitative_college_list)
-training_error = NN.train(input_vectors, targets, 10000)
+#original is 10
+input_vectors = np.around(DATA[DATA.columns[1:10]].to_numpy(dtype=np.float64), 2)
+print(input_vectors)
+standarized_college_rank = DATA['S. College_Rank']
+targets = np.array(standarized_college_rank)
+print(targets)
+training_error = NN.train(input_vectors, targets, 100000)
 plt.plot(training_error)
 plt.show()
+
+test_output_1 = NN.predict([.92, 1.13, -0.3, .6, -.4, -.5, -.7, -.3, -.01])
+print(test_output_1)
