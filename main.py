@@ -14,7 +14,7 @@ t_DATA = PrintTraining()
 MAJORS_DICTIONARY = MajorDiction()
 DATA = ReplaceMajor(t_DATA, MAJORS_DICTIONARY)
 DATA = ReplaceCollege(DATA, COLLEGE_DICTIONARY)
-print(DATA)
+
 # Standarizing ALL data:
 Standarized(DATA, DATA['Major_Codes'], 1, "S. Major Code")
 Standarized(DATA, DATA['Area'], 2, "S. Area")

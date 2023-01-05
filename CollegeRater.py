@@ -72,9 +72,14 @@ class CollegeRater:
 
     def Rate(self, stats): #stats is returned list from Fetch
         # temporary calculation: score = SAT25 + SAT75 + ACT25 + ACT75 - rank / acceptance_rate
-        stats[0] = stats[0].strip('%')
+        print(stats[0])
+        stats[0] = str(stats[0]).strip('%')
         stats = [int(x) for x in stats]
-        score = (stats[1] + stats[2] + stats[3] + stats[4]  - stats[5]) / stats[0]
+        if (stats[0] != 0):
+            score = (stats[1] + stats[2] + stats[3] + stats[4]  - stats[5]) / stats[0]
+        else:
+            stats[0] = 50
+            score = (stats[1] + stats[2] + stats[3] + stats[4]  - stats[5]) / stats[0]
         return score
 
 
