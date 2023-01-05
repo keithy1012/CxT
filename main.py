@@ -14,7 +14,7 @@ t_DATA = PrintTraining()
 MAJORS_DICTIONARY = MajorDiction()
 DATA = ReplaceMajor(t_DATA, MAJORS_DICTIONARY)
 DATA = ReplaceCollege(DATA, COLLEGE_DICTIONARY)
-
+print(DATA)
 # Standarizing ALL data:
 Standarized(DATA, DATA['Major_Codes'], 1, "S. Major Code")
 Standarized(DATA, DATA['Area'], 2, "S. Area")
@@ -27,20 +27,20 @@ Standarized(DATA, DATA['Acceptance Rate Low'], 10, "S. Low Acceptance")
 Standarized(DATA, DATA['Acceptance Rate High'], 11, "S. High Acceptance")
 DATA = DATA.drop(["Major_Codes", "Area", "SAT", "GPA", "Acceptance Rate Low", "Acceptance Rate High", "Raw_Cost_Low", "Major", "Raw_Cost_High", "Location_From_Home"], axis=1)
 
-
+# Quantifying College Names
 quantitative_college_list = []
 #Finds ranking for college as quantitative data
 for row in DATA.itertuples():
-    CR = CollegeRater(row[14], row[13])
+    CR = CollegeRater(row[13], row[14])
+    print(row[13])
     rank = CR.Run()
     quantitative_college_list.append(int(rank))
 DATA.insert(13, "College_Rank", quantitative_college_list) 
 
 Standarized(DATA, DATA['College_Rank'], 13, "S. College_Rank")
 DATA = DATA.drop(["College_Rank"], axis=1)
-print(DATA)
 
-#original is 10
+# Input Vectors: [S. Major Code, S. Area, S.Low Cost, S. High Cost, S. Location, S. SAT, S. GPA, S.Low Acceptance, S.High Acceptance, Home Zip]
 input_vectors = np.around(DATA[DATA.columns[1:10]].to_numpy(dtype=np.float64), 2)
 print(input_vectors)
 standarized_college_rank = DATA['S. College_Rank']
