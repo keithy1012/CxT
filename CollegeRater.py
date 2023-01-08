@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import random
+import csv
+
 class CollegeRater:
     
     def __init__(self, college_name, college_id):
@@ -15,7 +17,7 @@ class CollegeRater:
         return URL
 
     def Fetch(self, URL):
-        print(URL)
+        #print(URL)
         r = requests.get(URL, headers=self.headers)
         soup = BeautifulSoup(r.content, 'html5lib')
         data = []
@@ -53,36 +55,33 @@ class CollegeRater:
                         ACT25m = cols[index+1]
                         ACT75m = cols[index+2]
                     index +=1
-        print(SAT25r)
-        print(SAT25m)
         if (str(SAT25r).isdigit() and str(SAT25m).isdigit()):
-            SAT25 = SAT25r + SAT25m
-            SAT75 = SAT75r + SAT75m    
-            ACT25 = ACT25r + ACT25m
-            ACT75 = ACT75r + ACT75m  
+            SAT25 = int(SAT25r) + int(SAT25m)
+            SAT75 = int(SAT75r) + int(SAT75m)    
+            ACT25 = int(ACT25r) + int(ACT25m)
+            ACT75 = int(ACT75r) + int(ACT75m)  
         else:
             SAT25 = 1300
             SAT75 = 1400
             ACT25 = 16
             ACT75 = 24   
-
-        rank = self.GetRank(self.GetFullName(self.GetID()))
-
-        return [acceptance_rate, SAT25, SAT75, ACT25, ACT75, rank]
+        #rank = self.GetRank(self.GetFullName(self.GetID()))
+        return [acceptance_rate, SAT25, SAT75, ACT25, ACT75]
 
     def Rate(self, stats): #stats is returned list from Fetch
-        # temporary calculation: score = SAT25 + SAT75 + ACT25 + ACT75 - rank / acceptance_rate
-        print(stats[0])
+        # temporary calculation: score = SAT25 + SAT75 + ACT25 + ACT75 / acceptance_rate
         stats[0] = str(stats[0]).strip('%')
         stats = [int(x) for x in stats]
         if (stats[0] != 0):
-            score = (stats[1] + stats[2] + stats[3] + stats[4]  - stats[5]) / stats[0]
+            score = (stats[1] + stats[2] + stats[3] + stats[4]) / stats[0]
         else:
-            stats[0] = 50
-            score = (stats[1] + stats[2] + stats[3] + stats[4]  - stats[5]) / stats[0]
+            stats[0] = 70.7
+            score = (stats[1] + stats[2] + stats[3] + stats[4]) / stats[0]
+        print(stats)
+        Write_Rank(self.name, self.college_id, score)
         return score
 
-
+    ''' 
     def GetRank(self, uni_full_name):
         URL = f"https://www.forbes.com/colleges/{uni_full_name}/?sh=691441da2b7d"
         print(URL)
@@ -96,7 +95,7 @@ class CollegeRater:
         except:
             index = random.random() * 1000
             return index
-
+            '''
 
     def GetFullName(self, IPED_ID):
         df = pd.read_csv("csv\\CLEANED_UP_COLLEGES.csv", index_col=False)
@@ -105,12 +104,28 @@ class CollegeRater:
         result = result.replace(" ", "+")
         result = result.lower()
         return result
-
     def GetID(self):
         return self.college_id
-
     def Run(self):
         CR = CollegeRater(self.name, self.college_id)
         stats = CR.Fetch(CR.CreateURL())
         C_score = CR.Rate(stats)
         return C_score
+
+def Write_Rank(name, id, score):
+        row = [name, id, "{:.2f}".format(score)]
+        '''
+        with open ("csv\\COLLEGE_RANK.csv", "r") as f: #Dont write this info if it is already in csv
+            reader = csv.reader(f)
+            for row in reader:
+                if (row):
+                    if name in row[0]:
+                        return
+                    else:
+                        continue
+        '''
+        with open ("csv\\COLLEGE_RANK.csv", "a", newline='') as w:
+            writer = csv.writer(w)
+            writer.writerow(row)
+            
+                

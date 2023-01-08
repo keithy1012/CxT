@@ -55,3 +55,8 @@ def Standarized(df, column, index, name):
 
 def Z_Score(mean, SD, val):
     return (val-mean)/SD
+
+def Unstandardized(mean, SD, Z_score):
+    print("Mean " , mean)
+    print("SD:", SD)
+    return Z_score * SD + mean;
