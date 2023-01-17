@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions import *
 from CollegeRater import CollegeRater
+import csv
 global LIST_OF_COLLEGES, DATA, MAJORS_DICTIONARY, COLLEGE_DICTIONARY
 
 learning_rate = 0.01
@@ -41,7 +42,7 @@ Standarized(DATA, DATA['College_Rank'], 13, "S. College_Rank")
 C_RANK_MEAN = DATA['College_Rank'].mean()
 C_RANK_SD = DATA['College_Rank'].std()
 DATA = DATA.drop(["College_Rank"], axis=1)
-
+print(DATA)
 # Input Vectors: [S. Major Code, S. Area, S.Low Cost, S. High Cost, S. Location, S. SAT, S. GPA, S.Low Acceptance, S.High Acceptance, Home Zip]
 input_vectors = np.around(DATA[DATA.columns[1:10]].to_numpy(dtype=np.float64), 2)
 standarized_college_rank = DATA['S. College_Rank']
@@ -50,7 +51,12 @@ training_error = NN.train(input_vectors, targets, 100000)
 plt.plot(training_error)
 plt.show()
 
+#Standarized input values
 test_output_1 = NN.predict([.92, 1.13, -0.3, .6, -.4, -.5, -.7, -.3, -.01])
 print(test_output_1)
 print(Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1))
-# this returns a college's "score": score = SAT25 + SAT75 + ACT25 + ACT75 - rank / acceptance_rate
+# this returns a college's "score": score = SAT25 + SAT75 + ACT25 + ACT75 / acceptance_rate
+
+college_rank = pd.read_csv("csv\\COLLEGE_RANK.csv")
+college_rank = college_rank.sort_values(by = "SCORE")
+print(college_rank)

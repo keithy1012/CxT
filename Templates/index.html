@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College x Tinder</title>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <p id='embed'>{{embed}}</p>
+    <form>
+        <label for="m_code">Major Code</label>
+        <input type="text" id="m_code" name="m_code" placeholder="Major Code">
+    
+        <label for="area">Area (0-Rural, 1-City)</label>
+        <input type="text" id="area" name="area" placeholder="area">
+    
+        <label for="l_cost">Low Cost</label>
+        <input type="text" id="l_cost" name="l_cost" placeholder="Low Cost">
+    
+        <label for="h_cost">High Cost</label>
+        <input type="text" id="h_cost" name="h_cost" placeholder="High Cost">
+
+        <label for="miles_from_home">Preferred Miles From Home</label>
+        <input type="text" id="miles_from_home" name="miles_from_home" placeholder="Miles">
+
+        <label for="sat">SAT SCORE</label>
+        <input type="text" id="sat" name="sat" placeholder="SAT">
+        <!-- Maybe break this down into SATR and SATM -->
+
+        <label for="gpa">GPA</label>
+        <input type="text" id="gpa" name="gpa" placeholder="GPA">
+
+        <label for="l_acceptance">Low Acceptance Rate</label>
+        <input type="text" id="l_acceptance" name="l_acceptance" placeholder="Low Rate">
+    
+        <label for="h_acceptance">High Acceptance Rate</label>
+        <input type="text" id="h_acceptance" name="h_acceptance" placeholder="High Rate">    
+
+        <label for="zip_code">Zip Code</label>
+        <input type="text" id="zip_code" name="zip_code" placeholder="Zip Code">
+      
+        <input type="submit" id="Submit" value="Submit">
+      </form>
+
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  </body>
+</html>

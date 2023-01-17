@@ -4,8 +4,7 @@ import pandas as pd
 import random
 import csv
 
-class CollegeRater:
-    
+class CollegeRater:   
     def __init__(self, college_name, college_id):
         self.name = college_name
         self.college_id = college_id
@@ -113,19 +112,9 @@ class CollegeRater:
         return C_score
 
 def Write_Rank(name, id, score):
-        row = [name, id, "{:.2f}".format(score)]
-        '''
-        with open ("csv\\COLLEGE_RANK.csv", "r") as f: #Dont write this info if it is already in csv
-            reader = csv.reader(f)
-            for row in reader:
-                if (row):
-                    if name in row[0]:
-                        return
-                    else:
-                        continue
-        '''
-        with open ("csv\\COLLEGE_RANK.csv", "a", newline='') as w:
-            writer = csv.writer(w)
-            writer.writerow(row)
-            
-                
+        row = [name, id, "{:.2f}".format(score)]    
+        with open ("csv\\COLLEGE_RANK.csv", "r+", newline='') as f: #Dont write this info if it is already in csv
+            text = f.read()
+            if row[0] not in text:
+                writer = csv.writer(f)
+                writer.writerow(row)
