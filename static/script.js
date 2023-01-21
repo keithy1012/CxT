@@ -1,4 +1,5 @@
-const button = document.getElementById("Submit")
+const button = document.getElementById("Submit");
+const data = document.getElementById("info");
 
     button.onclick = function(){
         var major_code = document.getElementById("m_code").value;
@@ -15,10 +16,20 @@ const button = document.getElementById("Submit")
         const dict_values = {major_code, area, l_cost, h_cost, miles, SAT, GPA, l_accept, h_accept, zip} //Pass the javascript variables to a dictionary.
         const s = JSON.stringify(dict_values); // Stringify converts a JavaScript object or value to a JSON string
         console.log(s); // Prints the variables to console window, which are in the JSON format
-        window.alert(s)
+        //window.alert(s);
         $.ajax({
             url:"/test",
             type:"POST",
             contentType: "application/json",
-            data: JSON.stringify(s)});
+            data: JSON.stringify(s),
+            success: function(result) {
+                console.log(result);
+                //alert(result);
+            },
+            error: function(error){
+                console.log(error)
+            }
+        });
+
+      
 }

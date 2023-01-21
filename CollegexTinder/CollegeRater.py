@@ -13,6 +13,7 @@ class CollegeRater:
     def CreateURL(self):
         full_name = self.GetFullName(self.college_id)
         URL = f"https://nces.ed.gov/collegenavigator/?q={full_name}&s=all&id={self.college_id}"
+        #print(URL)
         return URL
 
     def Fetch(self, URL):
@@ -76,7 +77,7 @@ class CollegeRater:
         else:
             stats[0] = 70.7
             score = (stats[1] + stats[2] + stats[3] + stats[4]) / stats[0]
-        print(stats)
+        #print(stats)
         Write_Rank(self.name, self.college_id, score)
         return score
 
@@ -97,7 +98,7 @@ class CollegeRater:
             '''
 
     def GetFullName(self, IPED_ID):
-        df = pd.read_csv("csv\\CLEANED_UP_COLLEGES.csv", index_col=False)
+        df = pd.read_csv("CollegexTinder\\csv\\CLEANED_UP_COLLEGES.csv", index_col=False)
         val =  (df[(df['UNITID']==IPED_ID)])["INSTNM"]
         result = ''.join([i for i in val if not i.isdigit()])
         result = result.replace(" ", "+")
@@ -106,14 +107,13 @@ class CollegeRater:
     def GetID(self):
         return self.college_id
     def Run(self):
-        CR = CollegeRater(self.name, self.college_id)
-        stats = CR.Fetch(CR.CreateURL())
-        C_score = CR.Rate(stats)
+        stats = self.Fetch(self.CreateURL())
+        C_score = self.Rate(stats)
         return C_score
 
 def Write_Rank(name, id, score):
         row = [name, id, "{:.2f}".format(score)]    
-        with open ("csv\\COLLEGE_RANK.csv", "r+", newline='') as f: #Dont write this info if it is already in csv
+        with open ("CollegexTinder\\csv\\COLLEGE_RANK.csv", "r+", newline='') as f: #Dont write this info if it is already in csv
             text = f.read()
             if row[0] not in text:
                 writer = csv.writer(f)
