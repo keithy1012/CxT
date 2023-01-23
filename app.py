@@ -22,7 +22,7 @@ def test_func():
     print(input_vector) # This is the output that was stored in the JSON within the browser
     rank = CT.run(input_vector)
     print(rank)
-    return json.dumps({'status':'OK','rank':rank});
+    return json.dumps({'status':'OK','rank':'testtesttest'});
 
 
 if __name__ == "__main__":

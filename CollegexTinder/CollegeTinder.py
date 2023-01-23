@@ -50,7 +50,6 @@ class CollegeTinder:
         #print(DATA)
         standarized_college_rank = DATA['S. College_Rank']
         targets = np.array(standarized_college_rank)
-
         # Input Vectors: [S. Major Code, S. Area, S.Low Cost, S. High Cost, S. Location, S. SAT, S. GPA, S.Low Acceptance, S.High Acceptance, Home Zip]
         input_vectors = np.around(DATA[DATA.columns[1:10]].to_numpy(dtype=np.float64), 2)
         training_error = NN.train(input_vectors, targets, 100000)
@@ -58,7 +57,8 @@ class CollegeTinder:
         #plt.show()
 
         #Standarized input values
-        test_output_1 = NN.predict(input_vectors) 
+        input_vector = np.float_(input_vector)
+        test_output_1 = NN.predict(input_vector) 
         print(test_output_1)
         print(Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1))
         # this returns a college's "score": score = SAT25 + SAT75 + ACT25 + ACT75 / acceptance_rate
@@ -66,7 +66,7 @@ class CollegeTinder:
         college_rank = pd.read_csv("CollegexTinder\\csv\\COLLEGE_RANK.csv")
         college_rank = college_rank.sort_values(by = "SCORE")
         #print(college_rank)
-        return test_output_1
+        return Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1)
 
 def GetCollege():
     college = pd.read_csv("CollegexTinder\\csv\\FieldOfStudyData1415_1516_PP.csv")
@@ -122,6 +122,6 @@ def Z_Score(mean, SD, val):
     return (val-mean)/SD
 
 def Unstandardized(mean, SD, Z_score):
-    print("Mean " , mean)
-    print("SD:", SD)
+    #print("Mean " , mean)
+    #print("SD:", SD)
     return Z_score * SD + mean;
