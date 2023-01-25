@@ -25,7 +25,8 @@ const data = document.getElementById("info");
             data: JSON.stringify(s),
             success: function(result) {
                 console.log(result);
-                data.innerHTML = result;
+                var temp = JSON.parse(result)
+                data.innerHTML = temp.rank;
             },
             error: function(error){
                 console.log(error)

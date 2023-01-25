@@ -32,7 +32,7 @@ def write():
     result = json.loads(output)
     user_inputs = list(result.values())
     print(user_inputs)
-    with open ("CollegexTinder\\csv\\USER_DATA.csv", "r+", newline='') as f:
+    with open ("CollegexTinder\\csv\\USER_DATA.csv", "a", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(user_inputs)
     
