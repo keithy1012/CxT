@@ -31,6 +31,28 @@ class CollegeTinder:
         Standarized(DATA, DATA['GPA'], 8, "S. GPA")
         Standarized(DATA, DATA['Acceptance Rate Low'], 10, "S. Low Acceptance")
         Standarized(DATA, DATA['Acceptance Rate High'], 11, "S. High Acceptance")
+        MAJOR_MEAN = DATA['Major_Codes'].mean()
+        MAJOR_SD = DATA['Major_Codes'].std()
+        AREA_MEAN = DATA['Area'].mean()
+        AREA_SD = DATA['Area'].std()
+        LOW_COST_MEAN = DATA['Raw_Cost_Low'].mean()
+        LOW_COST_SD = DATA['Raw_Cost_Low'].std()
+        HIGH_COST_MEAN = DATA['Raw_Cost_High'].mean()
+        HIGH_COST_SD = DATA['Raw_Cost_High'].std()
+        LOC_MEAN = DATA['Location_From_Home'].mean()
+        LOC_SD = DATA['Location_From_Home'].std()
+        SAT_MEAN = DATA['SAT'].mean()
+        SAT_SD = DATA['SAT'].std()
+        GPA_MEAN = DATA['GPA'].mean()
+        GPA_SD = DATA['GPA'].std()
+        LOW_ACCEPT_MEAN = DATA['Acceptance Rate Low'].mean()
+        LOW_ACCEPT_SD = DATA['Acceptance Rate Low'].std()
+        HIGH_ACCEPT_MEAN = DATA['Acceptance Rate High'].mean()
+        HIGH_ACCEPT_SD = DATA['Acceptance Rate High'].std()
+        MEANS = [MAJOR_MEAN, AREA_MEAN, LOW_COST_MEAN, HIGH_COST_MEAN, LOC_MEAN, SAT_MEAN, GPA_MEAN, LOW_ACCEPT_MEAN, HIGH_ACCEPT_MEAN]
+        STAN_DEVS = [MAJOR_SD, AREA_SD, LOW_COST_SD, HIGH_COST_SD, LOC_SD, SAT_SD, GPA_SD, LOW_ACCEPT_SD, HIGH_ACCEPT_SD]
+
+
         DATA = DATA.drop(["Major_Codes", "Area", "SAT", "GPA", "Acceptance Rate Low", "Acceptance Rate High", "Raw_Cost_Low", "Major", "Raw_Cost_High", "Location_From_Home"], axis=1)
 
         # Quantifying College Names
@@ -56,16 +78,19 @@ class CollegeTinder:
         #plt.plot(training_error)
         #plt.show()
 
+        temp = np.float_(input_vector)
+        standarized_input_vector = Standarized_List(temp, MEANS, STAN_DEVS)
         #Standarized input values
-        input_vector = np.float_(input_vector)
-        test_output_1 = NN.predict(input_vector) 
+        print(standarized_input_vector)
+        print(len(standarized_input_vector))
+        input_vector = np.float_(standarized_input_vector)
+        test_output_1 = NN.predict(standarized_input_vector) 
         print(test_output_1)
         print(Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1))
         # this returns a college's "score": score = SAT25 + SAT75 + ACT25 + ACT75 / acceptance_rate
 
         college_rank = pd.read_csv("CollegexTinder\\csv\\COLLEGE_RANK.csv")
         college_rank = college_rank.sort_values(by = "SCORE")
-        #print(college_rank)
         return Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1)
 
 def GetCollege():
@@ -117,6 +142,16 @@ def Standarized(df, column, index, name):
     for i in column:
         res.append(Z_Score(mean, SD, i))
     df.insert(index, name, res)
+
+def Standarized_List(list, mean_list, SD_list):
+    print(list)
+    print(mean_list)
+    print(SD_list)
+    standarized_list = []
+    for i in range(0, len(list)):
+        standarized_list.append(Z_Score(mean_list[i], SD_list[i], list[i]))
+    return standarized_list
+
 
 def Z_Score(mean, SD, val):
     return (val-mean)/SD
