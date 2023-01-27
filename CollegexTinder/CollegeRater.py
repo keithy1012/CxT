@@ -10,14 +10,14 @@ class CollegeRater:
         self.college_id = college_id
         self.headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246"}
 
+    #Prints the URL of the college
     def CreateURL(self):
         full_name = self.GetFullName(self.college_id)
         URL = f"https://nces.ed.gov/collegenavigator/?q={full_name}&s=all&id={self.college_id}"
-        #print(URL)
         return URL
 
+    #Gets all the information for the URL + College
     def Fetch(self, URL):
-        #print(URL)
         r = requests.get(URL, headers=self.headers)
         soup = BeautifulSoup(r.content, 'html5lib')
         data = []
@@ -55,6 +55,7 @@ class CollegeRater:
                         ACT25m = cols[index+1]
                         ACT75m = cols[index+2]
                     index +=1
+        #If we can pull SAT values:
         if (str(SAT25r).isdigit() and str(SAT25m).isdigit()):
             SAT25 = int(SAT25r) + int(SAT25m)
             SAT75 = int(SAT75r) + int(SAT75m)    
@@ -68,7 +69,8 @@ class CollegeRater:
         #rank = self.GetRank(self.GetFullName(self.GetID()))
         return [acceptance_rate, SAT25, SAT75, ACT25, ACT75]
 
-    def Rate(self, stats): #stats is returned list from Fetch
+    # Takes in return value from Fetch and calculates a score for each college
+    def Rate(self, stats): 
         # temporary calculation: score = SAT25 + SAT75 + ACT25 + ACT75 / acceptance_rate
         stats[0] = str(stats[0]).strip('%')
         stats = [int(x) for x in stats]
@@ -77,25 +79,8 @@ class CollegeRater:
         else:
             stats[0] = 70.7
             score = (stats[1] + stats[2] + stats[3] + stats[4]) / stats[0]
-        #print(stats)
         Write_Rank(self.name, self.college_id, score)
         return score
-
-    ''' 
-    def GetRank(self, uni_full_name):
-        URL = f"https://www.forbes.com/colleges/{uni_full_name}/?sh=691441da2b7d"
-        print(URL)
-        r = requests.get(URL, headers=self.headers)
-        soup = BeautifulSoup(r.content, 'html5lib')
-        rank = soup.find("div", class_="profile-heading--desktop")
-        try:
-            index = str(rank).index('#')
-            c_rank = str(rank)[index+1:index+3]
-            return c_rank
-        except:
-            index = random.random() * 1000
-            return index
-            '''
 
     def GetFullName(self, IPED_ID):
         df = pd.read_csv("CollegexTinder\\csv\\CLEANED_UP_COLLEGES.csv", index_col=False)
@@ -104,8 +89,10 @@ class CollegeRater:
         result = result.replace(" ", "+")
         result = result.lower()
         return result
+
     def GetID(self):
         return self.college_id
+        
     def Run(self):
         stats = self.Fetch(self.CreateURL())
         C_score = self.Rate(stats)

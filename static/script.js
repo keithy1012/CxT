@@ -1,7 +1,7 @@
-const sub_button = document.getElementById("Submit");
+const submit_button = document.getElementById("Submit");
 const data = document.getElementById("info");
 
-    sub_button.onclick = function(){
+    submit_button.onclick = function(){
         var major_code = document.getElementById("m_code").value;
         var area = document.getElementById("area").value;
         var l_cost = document.getElementById("l_cost").value;                
@@ -11,15 +11,12 @@ const data = document.getElementById("info");
         var GPA = document.getElementById("gpa").value;                
         var l_accept = document.getElementById("l_acceptance").value;
         var h_accept = document.getElementById("h_acceptance").value;    
-        //var zip = document.getElementById("zip_code").value;
-
-        //const dict_values = {major_code, area, l_cost, h_cost, miles, SAT, GPA, l_accept, h_accept, zip}
         const dict_values = {major_code, area, l_cost, h_cost, miles, SAT, GPA, l_accept, h_accept} //Pass the javascript variables to a dictionary.
         const s = JSON.stringify(dict_values); // Stringify converts a JavaScript object or value to a JSON string
         console.log(s); // Prints the variables to console window, which are in the JSON format
         //window.alert(s);
         $.ajax({
-            url:"/test",
+            url:"/calculate",
             type:"POST",
             contentType: "application/json",
             data: JSON.stringify(s),
@@ -46,7 +43,9 @@ add_button.onclick = function(){
     var l_accept = document.getElementById("l_acceptance").value;
     var h_accept = document.getElementById("h_acceptance").value;    
     var zip = document.getElementById("zip_code").value;
-    const dict_values = {major_code, area, l_cost, h_cost, miles, SAT, GPA, l_accept, h_accept, zip}
+    var college = document.getElementById("college").value;    
+    var c_ID= document.getElementById("c_id").value;
+    const dict_values = {major_code, area, l_cost, h_cost, miles, SAT, GPA, l_accept, h_accept, zip, college, c_ID}
     const s = JSON.stringify(dict_values);
     console.log(s); 
 

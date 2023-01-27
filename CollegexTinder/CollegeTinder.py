@@ -1,7 +1,6 @@
 from CollegexTinder.NeuralNetwork import NeuralNetwork
 import numpy as np
 import matplotlib.pyplot as plt
-#from CollegexTinder.helper_functions import *
 from CollegexTinder.CollegeRater import CollegeRater
 import csv
 import os
@@ -55,9 +54,8 @@ class CollegeTinder:
 
         DATA = DATA.drop(["Major_Codes", "Area", "SAT", "GPA", "Acceptance Rate Low", "Acceptance Rate High", "Raw_Cost_Low", "Major", "Raw_Cost_High", "Location_From_Home"], axis=1)
 
-        # Quantifying College Names
-        quantitative_college_list = []
-        #Finds ranking for college as quantitative data  
+        # Quantifying College Names by getting ranks
+        quantitative_college_list = []  
         for row in DATA.itertuples():
             CR = CollegeRater(row[13], row[14])
             rank = CR.Run()
@@ -69,7 +67,6 @@ class CollegeTinder:
         C_RANK_MEAN = DATA['College_Rank'].mean()
         C_RANK_SD = DATA['College_Rank'].std()
         DATA = DATA.drop(["College_Rank"], axis=1)
-        #print(DATA)
         standarized_college_rank = DATA['S. College_Rank']
         targets = np.array(standarized_college_rank)
         # Input Vectors: [S. Major Code, S. Area, S.Low Cost, S. High Cost, S. Location, S. SAT, S. GPA, S.Low Acceptance, S.High Acceptance, Home Zip]
@@ -81,14 +78,12 @@ class CollegeTinder:
         temp = np.float_(input_vector)
         standarized_input_vector = Standarized_List(temp, MEANS, STAN_DEVS)
         #Standarized input values
-        print(standarized_input_vector)
-        print(len(standarized_input_vector))
         input_vector = np.float_(standarized_input_vector)
         test_output_1 = NN.predict(standarized_input_vector) 
         print(test_output_1)
         print(Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1))
-        # this returns a college's "score": score = SAT25 + SAT75 + ACT25 + ACT75 / acceptance_rate
 
+        # Saves the college rank for later use
         college_rank = pd.read_csv("CollegexTinder\\csv\\COLLEGE_RANK.csv")
         college_rank = college_rank.sort_values(by = "SCORE")
         return Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1)
@@ -151,7 +146,6 @@ def Standarized_List(list, mean_list, SD_list):
     for i in range(0, len(list)):
         standarized_list.append(Z_Score(mean_list[i], SD_list[i], list[i]))
     return standarized_list
-
 
 def Z_Score(mean, SD, val):
     return (val-mean)/SD

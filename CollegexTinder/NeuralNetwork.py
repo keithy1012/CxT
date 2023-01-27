@@ -17,7 +17,6 @@ class NeuralNetwork:
         layer1 = np.dot(input_vector, self.weights) + self.bias
         layer2 = self._sigmoid(layer1)
         prediction = layer2
-        #print(prediction)
         return prediction
     
     def _compute_gradients(self, input_vector, target):
