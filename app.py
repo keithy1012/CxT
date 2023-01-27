@@ -11,16 +11,16 @@ def index():
     return render_template('home.html')
 
 
-@app.route('/calculate')
-def calculate():
-    return render_template('index.html')
+@app.route('/main_form')
+def main_form():
+    return render_template('main_form.html')
 
 @app.route('/WRITE_DB')
 def save_data():
     return render_template('save_user_data.html')
 
-@app.route('/test', methods=['POST'])
-def test_func():
+@app.route('/calculate', methods=['POST'])
+def calculate():
     output = request.get_json()
     result = json.loads(output) #this converts the json output to a python dictionary
     input_vector = list(result.values())
