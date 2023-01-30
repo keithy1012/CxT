@@ -13,15 +13,12 @@ class CollegeTinder:
         self.learning_rate = learning_rate
     def run(self, input_vector):
         NN = NeuralNetwork(self.learning_rate)
-        LIST_OF_COLLEGES = GetCollege()
         COLLEGE_DICTIONARY = College_To_Number()
         t_DATA = PrintTraining()
-        MAJORS_DICTIONARY = MajorDiction()
-        DATA = ReplaceMajor(t_DATA, MAJORS_DICTIONARY)
-        DATA = ReplaceCollege(DATA, COLLEGE_DICTIONARY)
+        DATA = ReplaceCollege(t_DATA, COLLEGE_DICTIONARY)
 
         # Standarizing ALL data:
-        Standarized(DATA, DATA['Major_Codes'], 1, "S. Major Code")
+        Standarized(DATA, DATA['Major_ID'], 1, "S. Major Code")
         Standarized(DATA, DATA['Area'], 2, "S. Area")
         Standarized(DATA, DATA['Raw_Cost_Low'], 3, "S. Low Cost")
         Standarized(DATA, DATA['Raw_Cost_High'], 4, "S. High Cost")
@@ -30,8 +27,8 @@ class CollegeTinder:
         Standarized(DATA, DATA['GPA'], 8, "S. GPA")
         Standarized(DATA, DATA['Acceptance Rate Low'], 10, "S. Low Acceptance")
         Standarized(DATA, DATA['Acceptance Rate High'], 11, "S. High Acceptance")
-        MAJOR_MEAN = DATA['Major_Codes'].mean()
-        MAJOR_SD = DATA['Major_Codes'].std()
+        MAJOR_MEAN = DATA['Major_ID'].mean()
+        MAJOR_SD = DATA['Major_ID'].std()
         AREA_MEAN = DATA['Area'].mean()
         AREA_SD = DATA['Area'].std()
         LOW_COST_MEAN = DATA['Raw_Cost_Low'].mean()
@@ -52,18 +49,18 @@ class CollegeTinder:
         STAN_DEVS = [MAJOR_SD, AREA_SD, LOW_COST_SD, HIGH_COST_SD, LOC_SD, SAT_SD, GPA_SD, LOW_ACCEPT_SD, HIGH_ACCEPT_SD]
 
 
-        DATA = DATA.drop(["Major_Codes", "Area", "SAT", "GPA", "Acceptance Rate Low", "Acceptance Rate High", "Raw_Cost_Low", "Major", "Raw_Cost_High", "Location_From_Home"], axis=1)
-
+        DATA = DATA.drop(["Major_ID", "Area", "SAT", "GPA", "Acceptance Rate Low", "Acceptance Rate High", "Raw_Cost_Low", "Major", "Raw_Cost_High", "Location_From_Home"], axis=1)
+        print(DATA)
         # Quantifying College Names by getting ranks
         quantitative_college_list = []  
         for row in DATA.itertuples():
-            CR = CollegeRater(row[13], row[14])
+            CR = CollegeRater(row[11], row[12])
             rank = CR.Run()
             quantitative_college_list.append(int(rank))
-        DATA.insert(13, "College_Rank", quantitative_college_list) 
+        DATA.insert(12, "College_Rank", quantitative_college_list) 
 
 
-        Standarized(DATA, DATA['College_Rank'], 13, "S. College_Rank")
+        Standarized(DATA, DATA['College_Rank'], 12, "S. College_Rank")
         C_RANK_MEAN = DATA['College_Rank'].mean()
         C_RANK_SD = DATA['College_Rank'].std()
         DATA = DATA.drop(["College_Rank"], axis=1)
@@ -98,20 +95,10 @@ class CollegeTinder:
                 res.append(row.INSTM + " ")
         print(res)
         return res
-def GetCollege():
-    college = pd.read_csv("CollegexTinder\\csv\\FieldOfStudyData1415_1516_PP.csv")
-    array = college[["UNITID", "INSTNM" ,"CONTROL"]]
-    array = array.drop_duplicates("INSTNM")
-    return array
 
 def PrintTraining():
     data = pd.read_csv("CollegexTinder\\csv\\TRAINING_DATA.csv")
     return data
-
-def MajorDiction():
-    majors = pd.read_csv("CollegexTinder\\csv\\MAJORS1.csv")
-    majors_dictionary = dict(zip((majors["FOD1P"]),majors["Major"]))
-    return (majors_dictionary)
 
 def ReplaceMajor(df, majors_dict):
     list_of_major_code = []
