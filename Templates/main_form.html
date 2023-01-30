@@ -9,9 +9,9 @@
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <p id='embed'>{{embed}}</p>
     <form>
-        <label for="m_code">Major Code</label>
+        <label for="m_code">Major Code:</label><br>
+        <a href="https://drive.google.com/file/d/1LNiqWaIR5aDkGPKFpKo8RC_IX7TeqcMH/view?usp=sharing" target="_blank">Find your Major Code:</a><br>
         <input type="text" id="m_code" name="m_code" placeholder="Major Code">
     
         <label for="area">Area (0-Rural, 1-City)</label>
@@ -47,6 +47,7 @@
       </form>
       <h3 id = "info"></h3>
       <h3>Other Colleges To Consider: </h3>
+      <h3 id = "other_colleges"></h3> 
       <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
   </body>
 </html>

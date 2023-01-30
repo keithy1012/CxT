@@ -77,17 +77,27 @@ class CollegeTinder:
 
         temp = np.float_(input_vector)
         standarized_input_vector = Standarized_List(temp, MEANS, STAN_DEVS)
+        print("Input Vector", input_vector)
+        print("Standarized Input", standarized_input_vector)
         #Standarized input values
         input_vector = np.float_(standarized_input_vector)
         test_output_1 = NN.predict(standarized_input_vector) 
-        print(test_output_1)
-        print(Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1))
+        print("Standarized", test_output_1)
+        print("Unstandarized" , Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1))
 
         # Saves the college rank for later use
         college_rank = pd.read_csv("CollegexTinder\\csv\\COLLEGE_RANK.csv")
         college_rank = college_rank.sort_values(by = "SCORE")
         return Unstandardized(C_RANK_MEAN, C_RANK_SD, test_output_1)
-
+    def other_colleges(self, score):
+        res = []
+        college_rank = pd.read_csv("CollegexTinder\\csv\\COLLEGE_RANK.csv")
+        college_rank = college_rank.sort_values(by = "SCORE")  
+        for row in college_rank.itertuples():
+            if (abs(row.SCORE-score)<=100):
+                res.append(row.INSTM + " ")
+        print(res)
+        return res
 def GetCollege():
     college = pd.read_csv("CollegexTinder\\csv\\FieldOfStudyData1415_1516_PP.csv")
     array = college[["UNITID", "INSTNM" ,"CONTROL"]]
@@ -139,9 +149,9 @@ def Standarized(df, column, index, name):
     df.insert(index, name, res)
 
 def Standarized_List(list, mean_list, SD_list):
-    print(list)
-    print(mean_list)
-    print(SD_list)
+    print("Input Vector:", list)
+    print("Mean List:" , mean_list)
+    print("SD List:" , SD_list)
     standarized_list = []
     for i in range(0, len(list)):
         standarized_list.append(Z_Score(mean_list[i], SD_list[i], list[i]))

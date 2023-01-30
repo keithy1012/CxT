@@ -1,6 +1,6 @@
 const submit_button = document.getElementById("Submit");
 const data = document.getElementById("info");
-
+const other_colleges = document.getElementById("other_colleges");
     submit_button.onclick = function(){
         var major_code = document.getElementById("m_code").value;
         var area = document.getElementById("area").value;
@@ -24,6 +24,7 @@ const data = document.getElementById("info");
                 console.log(result);
                 var temp = JSON.parse(result)
                 data.innerHTML = temp.rank;
+                other_colleges.innerHTML = temp.list;
             },
             error: function(error){
                 console.log(error)

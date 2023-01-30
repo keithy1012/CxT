@@ -26,7 +26,8 @@ def calculate():
     input_vector = list(result.values())
     print(input_vector) # This is the output that was stored in the JSON within the browser
     rank = CT.run(input_vector)
-    return json.dumps({'status':'OK','rank':rank});
+    similar_colleges = CT.other_colleges(rank)
+    return json.dumps({'status':'OK','rank':rank, 'list':similar_colleges});
 
 
 @app.route('/write_to_db', methods=['POST'])
