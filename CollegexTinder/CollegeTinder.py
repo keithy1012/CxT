@@ -112,6 +112,7 @@ def ReplaceMajor(df, majors_dict):
     [float(i) for i in df["Major_Codes"]] #converts all strings to floats
     return df
 
+
 def College_To_Number():
     college_df = pd.read_csv("CollegexTinder\\csv\\CLEANED_UP_COLLEGES.csv")
     college_dictionary = dict(zip((college_df["INSTNM"]), college_df["UNITID"]))

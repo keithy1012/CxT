@@ -5,15 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>College x Tinder</title>
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='auto.js') }}" defer></script>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <p id='embed'>{{embed}}</p>
-    <form>
+    <form autocomplete="off">
         <label for="m_code">Major Code</label>
+        <a href="https://drive.google.com/file/d/1LNiqWaIR5aDkGPKFpKo8RC_IX7TeqcMH/view?usp=sharing" target="_blank">Find your Major Code:</a><br>
         <input type="text" id="m_code" name="m_code" placeholder="Major Code">
     
+        <label for="major_name">Major Name (Ex: COMPUTER SCIENCE)</label> 
+        <input type="text" id="major_name" name="major_name" placeholder="Major Name">
+
         <label for="area">Area (0-Rural, 1-City)</label>
         <input type="text" id="area" name="area" placeholder="area">
     
@@ -42,9 +46,12 @@
         <label for="zip_code">Zip Code</label>
         <input type="text" id="zip_code" name="zip_code" placeholder="Zip Code">
 
-        <label for="college">College</label>
+        <label for="college">College</label><br>
+        <a href="https://drive.google.com/file/d/1yYFtwuZucQTfGoc5So90-rViCAZk-6xj/view?usp=share_link" target="_blank">Find your college name and ID:</a><br>    
+        <div class="autocomplete">
         <input type="text" id="college" name="college" placeholder="College">    
-
+        </div>
+        <br>
         <label for="c_id">College ID</label>
         <input type="text" id="c_id" name="c_id" placeholder="College ID">
         
