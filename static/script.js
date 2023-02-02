@@ -2,6 +2,7 @@ const submit_button = document.getElementById("Submit");
 const data = document.getElementById("info");
 const other_colleges = document.getElementById("other_colleges");
     submit_button.onclick = function(){
+
         var major_code = document.getElementById("m_code").value;
         var area = document.getElementById("area").value;
         var l_cost = document.getElementById("l_cost").value;                
@@ -14,7 +15,6 @@ const other_colleges = document.getElementById("other_colleges");
         const dict_values = {major_code, area, l_cost, h_cost, miles, SAT, GPA, l_accept, h_accept} //Pass the javascript variables to a dictionary.
         const s = JSON.stringify(dict_values); // Stringify converts a JavaScript object or value to a JSON string
         console.log(s); // Prints the variables to console window, which are in the JSON format
-        //window.alert(s);
         $.ajax({
             url:"/calculate",
             type:"POST",
